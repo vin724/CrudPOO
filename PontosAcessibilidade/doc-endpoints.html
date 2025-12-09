@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Especificação de Endpoints da API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #f5f5f5;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    h1, h2, h3, h4 {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+
+    .section {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .endpoint {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: #fafafa;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-right: 8px;
+    }
+
+    .method.GET {
+      background: #1976d2;
+    }
+
+    .method.POST {
+      background: #2e7d32;
+    }
+
+    .method.PUT {
+      background: #ef6c00;
+    }
+
+    .method.DELETE {
+      background: #c62828;
+    }
+
+    .path {
+      font-family: "Fira Code", monospace;
+      background: #eeeeee;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      background: #e3f2fd;
+      color: #0d47a1;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f0f0f0;
+    }
+
+    pre {
+      background: #212121;
+      color: #f5f5f5;
+      padding: 10px 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+    }
+
+    code {
+      font-family: "Fira Code", monospace;
+    }
+
+    .small {
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .highlight {
+      background: #fffde7;
+      border-left: 4px solid #fbc02d;
+      padding: 8px 10px;
+      margin-top: 8px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    ul {
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    li {
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+      }
+
+      .container {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Especificação de Endpoints da API</h1>
+    <p class="subtitle">
+      Documento de referência dos endpoints REST para gerenciamento de pontos de acessibilidade urbana.
+    </p>
+
+    <div class="section">
+      <h2>1. Informações Gerais</h2>
+      <p><strong>Base URL (desenvolvimento):</strong> <code>http://localhost:8080</code></p>
+      <p><strong>Recurso principal:</strong> <code>/pontos-acessibilidade</code></p>
+      <p><strong>Formato de dados:</strong> JSON para requisições e respostas.</p>
+      <p><strong>Entidade:</strong> <code>PontoAcessibilidade</code></p>
+
+      <h3>1.1 Estrutura da entidade <code>PontoAcessibilidade</code></h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Atributo</th>
+            <th>Tipo</th>
+            <th>Obrigatório</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>id</code></td>
+            <td>number (Long)</td>
+            <td>Não (gerado pelo servidor)</td>
+            <td>Identificador único do ponto de acessibilidade.</td>
+          </tr>
+          <tr>
+            <td><code>nomeLocal</code></td>
+            <td>string</td>
+            <td>Sim</td>
+            <td>Nome do local (praça, loja, prédio público, ponto de ônibus, etc.).</td>
+          </tr>
+          <tr>
+            <td><code>endereco</code></td>
+            <td>string</td>
+            <td>Sim</td>
+            <td>Endereço textual do local.</td>
+          </tr>
+          <tr>
+            <td><code>tipoLocal</code></td>
+            <td>string</td>
+            <td>Sim</td>
+            <td>
+              Categoria do local. Exemplos de valores:<br />
+              <code>COMERCIO</code>, <code>SERVICO_PUBLICO</code>, <code>TRANSPORTE</code>, <code>LAZER</code>, <code>OUTRO</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>temRampa</code></td>
+            <td>boolean</td>
+            <td>Não</td>
+            <td>Indica se o local possui rampa de acesso.</td>
+          </tr>
+          <tr>
+            <td><code>temBanheiroAdaptado</code></td>
+            <td>boolean</td>
+            <td>Não</td>
+            <td>Indica se o local possui banheiro adaptado.</td>
+          </tr>
+          <tr>
+            <td><code>temVagaPCD</code></td>
+            <td>boolean</td>
+            <td>Não</td>
+            <td>Indica se há vaga reservada para pessoas com deficiência.</td>
+          </tr>
+          <tr>
+            <td><code>possuiObstaculos</code></td>
+            <td>boolean</td>
+            <td>Não</td>
+            <td>Indica se há obstáculos (buracos, degraus, calçada irregular, etc.).</td>
+          </tr>
+          <tr>
+            <td><code>acessibilidadeGeral</code></td>
+            <td>string</td>
+            <td>Não</td>
+            <td>
+              Avaliação geral do ponto. Exemplos de valores:<br/>
+              <code>BOA</code>, <code>MEDIA</code>, <code>RUIM</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>descricao</code></td>
+            <td>string</td>
+            <td>Não</td>
+            <td>Campo livre para observações adicionais.</td>
+          </tr>
+          <tr>
+            <td><code>indiceAcessibilidade</code></td>
+            <td>number (0 a 100)</td>
+            <td>Somente resposta</td>
+            <td>
+              Campo calculado pelo servidor com base nos atributos booleanos
+              (método <code>calcularIndiceAcessibilidade()</code>).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="small">
+        <strong>Observação:</strong> o campo <code>indiceAcessibilidade</code> não precisa ser enviado no corpo da requisição;
+        ele é calculado no backend e retornado nas respostas.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>2. Endpoints</h2>
+
+      <div class="endpoint">
+        <h3>
+          <span class="method GET">GET</span>
+          <span class="path">/pontos-acessibilidade</span>
+        </h3>
+        <p><strong>Descrição:</strong> Lista todos os pontos de acessibilidade cadastrados.</p>
+
+        <h4>2.1.1 Parâmetros</h4>
+        <p>Não há parâmetros de rota ou query nesta versão.</p>
+
+        <h4>2.1.2 Respostas</h4>
+        <ul>
+          <li><strong>200 OK</strong> – Retorna um array de objetos <code>PontoAcessibilidade</code>.</li>
+        </ul>
+
+        <h4>Exemplo de resposta <span class="small">(200 OK)</span></h4>
+        <pre><code>{
+  "id": 1,
+  "nomeLocal": "Praça Central",
+  "endereco": "Av. Principal, 123 - Centro",
+  "tipoLocal": "LAZER",
+  "temRampa": true,
+  "temBanheiroAdaptado": false,
+  "temVagaPCD": true,
+  "possuiObstaculos": false,
+  "acessibilidadeGeral": "BOA",
+  "descricao": "Calçada ampla e rampa lateral.",
+  "indiceAcessibilidade": 75
+}</code></pre>
+      </div>
+
+      <div class="endpoint">
+        <h3>
+          <span class="method GET">GET</span>
+          <span class="path">/pontos-acessibilidade/nome/{nome}</span>
+        </h3>
+        <p><strong>Descrição:</strong> Busca um ponto específico de acessibilidade pelo nome.</p>
+
+        <h4>2.2.1 Parâmetros de rota</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Obrigatório</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Nome</code></td>
+              <td>String</td>
+              <td>Sim</td>
+              <td>Nome do ponto de acessibilidade a ser consultado.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>2.2.2 Respostas</h4>
+        <ul>
+          <li><strong>200 OK</strong> – Retorna o objeto <code>PontoAcessibilidade</code>.</li>
+          <li><strong>404 Not Found</strong> – Não existe ponto com o nome informado.</li>
+        </ul>
+
+        <h4>Exemplo de resposta <span class="small">(200 OK)</span></h4>
+        <pre><code>{
+  "id": 2,
+  "nomeLocal": "Supermercado X",
+  "endereco": "Rua Otto Unger, 456 - Bairro Norte",
+  "tipoLocal": "COMERCIO",
+  "temRampa": true,
+  "temBanheiroAdaptado": true,
+  "temVagaPCD": true,
+  "possuiObstaculos": false,
+  "acessibilidadeGeral": "BOA",
+  "descricao": "Entrada principal acessível e vagas reservadas próximas.",
+  "indiceAcessibilidade": 100
+}</code></pre>
+      </div>
+
+      <div class="endpoint">
+        <h3>
+          <span class="method POST">POST</span>
+          <span class="path">/pontos-acessibilidade</span>
+        </h3>
+        <p><strong>Descrição:</strong> Cria um novo ponto de acessibilidade.</p>
+
+        <h4>2.3.1 Corpo da requisição</h4>
+        <p>Enviar JSON com os campos da entidade (exceto <code>id</code> e <code>indiceAcessibilidade</code>).</p>
+
+        <h4>Exemplo de corpo da requisição</h4>
+        <pre><code>{
+  "nomeLocal": "Ponto de Ônibus Av. Central",
+  "endereco": "Av. Central, 789 - Centro",
+  "tipoLocal": "TRANSPORTE",
+  "temRampa": true,
+  "temBanheiroAdaptado": false,
+  "temVagaPCD": false,
+  "possuiObstaculos": true,
+  "acessibilidadeGeral": "MEDIA",
+  "descricao": "Rampa de acesso, mas calçada com pequenos desníveis."
+}</code></pre>
+
+        <h4>2.3.2 Respostas</h4>
+        <ul>
+          <li><strong>201 Created</strong> – Ponto criado com sucesso; retorna o objeto criado.</li>
+          <li><strong>400 Bad Request</strong> – Dados inválidos ou campos obrigatórios ausentes.</li>
+        </ul>
+
+        <h4>Exemplo de resposta <span class="small">(201 Created)</span></h4>
+        <pre><code>{
+  "id": 3,
+  "nomeLocal": "Ponto de Ônibus Av. Central",
+  "endereco": "Av. Central, 789 - Centro",
+  "tipoLocal": "TRANSPORTE",
+  "temRampa": true,
+  "temBanheiroAdaptado": false,
+  "temVagaPCD": false,
+  "possuiObstaculos": true,
+  "acessibilidadeGeral": "MEDIA",
+  "descricao": "Rampa de acesso, mas calçada com pequenos desníveis.",
+  "indiceAcessibilidade": 50
+}</code></pre>
+
+        <div class="highlight">
+          <strong>Localização:</strong> o cabeçalho <code>Location</code> da resposta deve conter a URL do novo recurso,
+          por exemplo: <code>Location: /pontos-acessibilidade/3</code>.
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <h3>
+          <span class="method PUT">PUT</span>
+          <span class="path">/pontos-acessibilidade/{id}</span>
+        </h3>
+        <p><strong>Descrição:</strong> Atualiza completamente os dados de um ponto de acessibilidade existente.</p>
+
+        <h4>2.4.1 Parâmetros de rota</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Obrigatório</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>id</code></td>
+              <td>number</td>
+              <td>Sim</td>
+              <td>ID do ponto a ser atualizado.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>2.4.2 Corpo da requisição</h4>
+        <p>
+          JSON com os novos valores para os campos da entidade
+          (novamente, <code>id</code> e <code>indiceAcessibilidade</code> não precisam ser enviados).
+        </p>
+
+        <h4>Exemplo de corpo da requisição</h4>
+        <pre><code>{
+  "nomeLocal": "Ponto de Ônibus Av. Central (revisto)",
+  "endereco": "Av. Central, 789 - Centro",
+  "tipoLocal": "TRANSPORTE",
+  "temRampa": true,
+  "temBanheiroAdaptado": false,
+  "temVagaPCD": true,
+  "possuiObstaculos": false,
+  "acessibilidadeGeral": "BOA",
+  "descricao": "Rampa de acesso, calçada regular e vaga PCD próxima."
+}</code></pre>
+
+        <h4>2.4.3 Respostas</h4>
+        <ul>
+          <li><strong>200 OK</strong> – Retorna o objeto atualizado.</li>
+          <li><strong>404 Not Found</strong> – Não existe ponto com o ID informado.</li>
+          <li><strong>400 Bad Request</strong> – Dados inválidos.</li>
+        </ul>
+
+        <h4>Exemplo de resposta <span class="small">(200 OK)</span></h4>
+        <pre><code>{
+  "id": 3,
+  "nomeLocal": "Ponto de Ônibus Av. Central (revisto)",
+  "endereco": "Av. Central, 789 - Centro",
+  "tipoLocal": "TRANSPORTE",
+  "temRampa": true,
+  "temBanheiroAdaptado": false,
+  "temVagaPCD": true,
+  "possuiObstaculos": false,
+  "acessibilidadeGeral": "BOA",
+  "descricao": "Rampa de acesso, calçada regular e vaga PCD próxima.",
+  "indiceAcessibilidade": 75
+}</code></pre>
+      </div>
+
+      <div class="endpoint">
+        <h3>
+          <span class="method DELETE">DELETE</span>
+          <span class="path">/pontos-acessibilidade/{id}</span>
+        </h3>
+        <p><strong>Descrição:</strong> Exclui um ponto de acessibilidade existente.</p>
+
+        <h4>2.5.1 Parâmetros de rota</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Obrigatório</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>id</code></td>
+              <td>number</td>
+              <td>Sim</td>
+              <td>ID do ponto a ser excluído.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>2.5.2 Respostas</h4>
+        <ul>
+          <li><strong>204 No Content</strong> – Ponto excluído com sucesso.</li>
+          <li><strong>404 Not Found</strong> – Não existe ponto com o ID informado.</li>
+        </ul>
+      </div>
+
+    <div class="section">
+      <h2>3. Resumo Rápido dos Endpoints</h2>
+      <ul>
+        <li><span class="method GET">GET</span> <code>/pontos-acessibilidade</code> — Lista todos os pontos.</li>
+        <li><span class="method GET">GET</span> <code>/pontos-acessibilidade/nome/{nome}</code> — Busca um ponto por nome.</li>
+        <li><span class="method POST">POST</span> <code>/pontos-acessibilidade</code> — Cria um novo ponto.</li>
+        <li><span class="method PUT">PUT</span> <code>/pontos-acessibilidade/{id}</code> — Atualiza um ponto existente.</li>
+        <li><span class="method DELETE">DELETE</span> <code>/pontos-acessibilidade/{id}</code> — Exclui um ponto.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

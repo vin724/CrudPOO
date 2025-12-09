@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pontos de Acessibilidade</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Mapeamento de Pontos de Acessibilidade</h1>
+    <p class="subtitle">
+      Cadastre e gerencie pontos da cidade avaliando sua acessibilidade para pessoas com mobilidade reduzida.
+    </p>
+ 
+  <div class="search-row">
+    <label for="ponto-nome-busca">Buscar por nome:</label>
+    <input type="text" id="ponto-nome-busca" placeholder="Ex: Praça Central" />
+    <button id="btn-buscar-nome" class="secondary">Buscar</button>
+    <button id="btn-sair-filtro" class="secondary" style="display:none;">Sair do filtro</button>
+    <span id="status-message" class="status-message"></span>
+  </div>
+ 
+    <div class="layout">
+      <div class="card">
+        <h2 id="form-title">Novo ponto de acessibilidade</h2>
+ 
+        <form id="ponto-form">
+          <input type="hidden" id="ponto-id" />
+ 
+          <label for="nomeLocal">Nome do local</label>
+          <input type="text" id="nomeLocal" placeholder="Ex: Praça Central, Supermercado" required />
+ 
+          <label for="endereco">Endereço</label>
+          <input type="text" id="endereco" placeholder="Rua, número, bairro, cidade" required />
+ 
+          <label for="tipoLocal">Tipo de local</label>
+          <select id="tipoLocal" required>
+            <option value="">Selecione...</option>
+            <option value="COMERCIO">Comércio</option>
+            <option value="SERVICO_PUBLICO">Serviço público</option>
+            <option value="TRANSPORTE">Transporte</option>
+            <option value="LAZER">Lazer</option>
+            <option value="OUTRO">Outro</option>
+          </select>
+ 
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" id="temRampa" onchange="this.value=this.checked">
+              Possui rampa de acesso
+            </label>
+            <label>
+              <input type="checkbox" id="temBanheiroAdaptado" onchange="this.value=this.checked">
+              Banheiro adaptado
+            </label>
+            <label>
+              <input type="checkbox" id="temVagaPCD" onchange="this.value=this.checked">
+              Vaga reservada PCD
+            </label>
+            <label>
+              <input type="checkbox" id="possuiObstaculos" onchange="this.value=this.checked">
+              Possui obstáculos (buracos, degraus, etc.)
+            </label>
+          </div>
+ 
+          <label for="acessibilidadeGeral">Acessibilidade geral</label>
+          <select id="acessibilidadeGeral">
+            <option value="">Selecione...</option>
+            <option value="BOA">Boa</option>
+            <option value="MEDIA">Média</option>
+            <option value="RUIM">Ruim</option>
+          </select>
+ 
+          <label for="descricao">Descrição / Observações</label>
+          <textarea id="descricao" placeholder="Ex: Entrada lateral acessível, degrau na porta principal, calçada irregular..."></textarea>
+ 
+          <div class="btn-row">
+            <button type="submit" class="primary">Salvar</button>
+            <button id="btn-limpar" class="secondary">Limpar</button>
+          </div>
+        </form>
+      </div>
+ 
+      <div class="card">
+        <h2>Lista de pontos cadastrados</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Local</th>
+              <th>Endereço</th>
+              <th>Tipo</th>
+              <th>Recursos</th>
+              <th>Índice</th>
+              <th>Acessibilidade</th>
+              <th>Descrição</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="pontos-tbody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+ 
+  <script src="main.js"></script>
+</body>
+
+</html>
+
